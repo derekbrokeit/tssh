@@ -1,0 +1,114 @@
+#!/bin/bash
+# this establishes a connection to a remote server
+# if necessary it automatically handles port forwarding from a central server
+# This depends on the existance of a file located in $LOGS_DIR/serverconn
+# there are 2 input variables:
+# $1 is the title of the server in the serverconn file
+# $2 is a message (or code to be run) sent to the server [optional]
+#    if port forwarding occurs AND no message is given, then $auto_msg is supplied
+
+# message given if none is specified (for non-port forwarded dest)
+auto_msg=
+# message given if none is specified (for port forwarded dest)
+auto_msg_port='if [[ $(uname) != Darwin ]] ; then source $HOME/.bashrc ; fi ; tmx -d'
+
+if [[ "$1" == -P ]] ; then
+  # proxy to the central server
+  # this connects a SOCKSv5 proxy connection to the given port
+  # for now, this is only valid for the central server
+
+  # get the central computer
+  regex="^.+\*\|"
+  name=$(egrep "$regex" $LOGS_DIR/serverconn | awk -F'|' '{print $1}')
+  ip=$(egrep "$regex" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
+  port=1080
+
+  # setup the command and make sure it's not already running
+  command="ssh -D $port -Nf $ip"
+  test=$(ps -e | egrep "$command" 2> /dev/null | awk '{print $1}')
+  if [[ $(echo $test | wc -w) -eq 1 ]] ; then
+    echo "$(basename $0): Proxy to $name > port $port"
+    $command
+    exit
+  else
+    echo "$(basename $0): Closing the Proxy connection"
+    kill $(echo $test | awk '{print $1}')
+    exit
+  fi
+else
+  # find the destination
+  destination=$1
+  tmp=$(mktemp -t $(basename $0).XXX)
+  cat $LOGS_DIR/serverconn | awk -F'|' '{print $1}' > $tmp
+  egrep "^${destination}" $tmp > $tmp.1
+  search=$(cat $tmp.1)
+  if [[ "x$search" == "x" ]] ; then
+    # unkown server
+    ! echo -e "${ERROR_RED}*** $(basename $0): destination '$destination' not found${NC}"
+    exit
+  elif [[ $(echo $search | wc -w) -gt 1 ]] ; then
+    # make sure the destination is unique
+    search=$( egrep "^${destination}(\*$|$)" $tmp.1)
+    if [[ $(echo $search | wc -w) -ne 1 ]] ; then
+      ! echo -e "${ERROR_RED}*** $(basename $0): destination '$destination' is not unique${NC}"
+      exit
+    fi
+    search="^$search(\*|\|)"
+  else
+    search="^$search"
+  fi
+fi
+name=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $1}')
+ip=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
+user=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $3}')
+port=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
+
+# prepare the message for the server
+shift 1
+if [[ $# -gt 0 ]] ; then
+  message="$@"
+fi
+
+echo    "$(basename $0): ${name}"
+if [[ "x$message" != "x" ]] ; then
+  echo "  message: $message"
+fi
+
+#if [[ ${HOSTNAME} == momo* ]] ; then
+if [[ ! -n $port && -n $ip ]] ; then
+  # this connects to any server without port forwarding
+  if [[ ! -n $message ]] ; then
+    message=$auto_msg
+  fi
+  ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $ip -t $message
+elif [[ -n $ip  && -n $port ]] ; then
+  # a port existing implies that we must port forward from a central server
+  # this connection is from a computer that may be out in the wilderness, so we must tunnel through cello
+  if [[ ! -n $message ]] ; then
+    message=$auto_msg_port
+  fi
+
+  # grab info on the central server  ... this assumes that only one exists
+  center_name=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $1}')
+  center_ip=$(  egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
+  center_user=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $3}')
+  center_port=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
+
+  # first, open tunnel
+  echo -ne "  establishing tunnel through $center_name ..."
+  ssh -f2 -L $port:$ip:22 $center_ip 'sleep 60' > /dev/null  2> /dev/null
+  # this establishes a tunnel to local $ip through $center_ip
+  # this session automatically ends when sleep 60 ends, but is kept open as long as the tunnel is in use
+  # this ensures that the port is reopenned as soon as the tunnel is disconnected from (or at least in 1 minute)
+  # error messages and text output are suppressed
+
+  # now establish connection to final destination
+  echo -ne "\r  tunnel -> $name ...                    \n"
+  ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $port localhost -t $message
+  # this walks through the tunnel while suppressing the "auth host" questions
+  # without this, a connection to [port]:localhost is not possible inside a shell script
+  # this -t '...' part opens the default tmux session
+  # when the connection is detached or cut, the ssh connection is removed
+fi
+
+

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if [[ $COMP_TYPE != "local" ]] ; then
+   echo "*** Please use osselect from a local computer, not $HOSTNAME"
+   exit
+fi
+function tmWinName(){
+   if [[ $# -gt 0 ]] ; then
+      tmux rename-window $@
+   else
+      tmWinName ${0##*/}
+   fi
+}
+tmWinName
+
+while true; do
+   read -p "Server: " server
+   #case $server in
+      #c )
+         #server=cello
+         #;;
+      #h )
+         #server=harp
+         #;;
+      #t)
+         #server=tuba
+         #;;
+      #me)
+         #server=mezzo
+         #;;
+      #mc)
+         #server=momo
+         #;;
+      #k )
+         #server=koguriyama
+         #;;
+   #esac
+   tmWinName ${server} 
+   tssh $server && break  
+   tmWinName 
+done
+tmux setw automatic-rename on
