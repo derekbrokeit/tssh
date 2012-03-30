@@ -10,7 +10,7 @@
 # message given if none is specified (for non-port forwarded dest)
 auto_msg=
 # message given if none is specified (for port forwarded dest)
-auto_msg_port='if [[ $(uname) != Darwin ]] ; then source $HOME/.bashrc ; fi ; tmx -d'
+auto_msg_port='if [[ $(uname) != Darwin ]] ; then source $HOME/.${SHELL##*/}rc ; fi ; tmx -d'
 
 if [[ "$1" == -P ]] ; then
   # proxy to the central server
@@ -62,19 +62,6 @@ name=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $1}')
 ip=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
 user=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $3}')
 port=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
-
-  ###### TODO merge this into .rcfiles/serversetup 
-  case $name in
-    mo* | k* )
-      home="\/Users\/$USER"
-      ;;
-    * ) 
-      home="\/home\/$USER"
-      ;;
-   esac
-   replace="$home\/bin\/tmx\/bin\/tmx"
-   auto_msg_port=$(echo "$auto_msg_port" | sed "s/tmx/$replace/g")
-  ######
 
 # prepare the message for the server
 shift 1
