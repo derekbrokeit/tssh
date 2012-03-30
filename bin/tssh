@@ -63,6 +63,19 @@ ip=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
 user=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $3}')
 port=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
 
+  ###### TODO merge this into .rcfiles/serversetup 
+  case $name in
+    mo* | k* )
+      home="\/Users\/$USER"
+      ;;
+    * ) 
+      home="\/home\/$USER"
+      ;;
+   esac
+   replace="$home\/bin\/tmx\/bin\/tmx"
+   auto_msg_port=$(echo "$auto_msg_port" | sed "s/tmx/$replace/g")
+  ######
+
 # prepare the message for the server
 shift 1
 if [[ $# -gt 0 ]] ; then
