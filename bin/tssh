@@ -10,7 +10,7 @@
 # message given if none is specified (for non-port forwarded dest)
 auto_msg=
 # message given if none is specified (for port forwarded dest)
-auto_msg_port='if [[ $(uname) != Darwin ]] ; then source $HOME/.bashrc ; fi ; tmx -d'
+auto_msg_port='if [[ $(uname) != Darwin ]] ; then source $HOME/.$(basename $SHELL)rc ; fi ; tmx -d'
 
 if [[ "$1" == -P ]] ; then
   # proxy to the central server
