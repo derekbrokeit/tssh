@@ -64,6 +64,7 @@ user=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $3}')
 port=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
 
 # prepare the message for the server
+unset message
 shift 1
 if [[ $# -gt 0 ]] ; then
   message="$@"
