@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [[ $COMP_TYPE != "local" ]] ; then
    echo "*** Please use osselect from a local computer, not $HOSTNAME"
