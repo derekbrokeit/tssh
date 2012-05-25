@@ -24,17 +24,16 @@ if [[ "$1" == -P ]] ; then
   port=1080
 
   # setup the command and make sure it's not already running
-  command="ssh -D $port -Nf $ip"
+  command="ssh -D $port $ip"
   test=$(ps -e | egrep "$command" 2> /dev/null | awk '{print $1}')
   if [[ $(echo $test | wc -w) -eq 1 ]] ; then
     echo "$(basename $0): Proxy to $name > port $port"
     $command
-    exit
   else
     echo "$(basename $0): Closing the Proxy connection"
     kill $(echo $test | awk '{print $1}')
-    exit
   fi
+  exit
 else
   # find the destination
   destination=$1
