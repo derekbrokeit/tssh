@@ -108,7 +108,7 @@ elif [[ -n $ip  && -n $port ]] ; then
 
   # now establish connection to final destination
   echo -ne "\r  tunnel -> $name ...                    \n"
-  ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $port localhost -t $message
+  ssh -q -Y -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $port localhost -t $message
   # this walks through the tunnel while suppressing the "auth host" questions
   # without this, a connection to [port]:localhost is not possible inside a shell script
   # this -t '...' part opens the default tmux session
