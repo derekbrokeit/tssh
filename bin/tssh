@@ -6,6 +6,9 @@
 # $1 is the title of the server in the serverconn file
 # $2 is a message (or code to be run) sent to the server [optional]
 #    if port forwarding occurs AND no message is given, then $auto_msg is supplied
+if [[ -f $HOME/.path ]] ; then
+  . $HOME/.path
+fi
 
 # message given if none is specified (for non-port forwarded dest)
 auto_msg=
