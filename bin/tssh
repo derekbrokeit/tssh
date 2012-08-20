@@ -13,7 +13,8 @@ fi
 # message given if none is specified (for non-port forwarded dest)
 auto_msg=
 # message given if none is specified (for port forwarded dest)
-auto_msg_port='source $HOME/.path  ; tmx -d'
+# auto_msg_port='source $HOME/.path  ; tmx -d'
+auto_msg_port='source $HOME/.path  ; LANG=ja_JP.utf8 exec tmx -d'
 
 if [[ "$1" == -P ]] ; then
   # proxy to the central server
