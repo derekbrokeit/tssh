@@ -69,32 +69,32 @@ program you can do some interesting things.
   you disconnect, it will automatically free up your port (e.g. 7070 or
   whatever you set it) when you are done.
 
-    # note, we cna actually use smaller parts of the name as long as it is unique
-    $ tssh remote
-    tssh: remote
-        tunnel -> remote_server
-    # this attaches to the default tmux session on remote server
+        # note, we cna actually use smaller parts of the name as long as it is unique
+        $ tssh remote
+        tssh: remote
+            tunnel -> remote_server
+        # this attaches to the default tmux session on remote server
 
   2. A new message can be sent.
 
-    $ tssh remote "echo hello ; sleep 5 ; echo byebye"
-    tssh: remote_server
-        message: echo hello ; sleep 5 ; echo byebye
-        tunnel -> remote_server
-    hello
-    byebye
-    $
+        $ tssh remote "echo hello ; sleep 5 ; echo byebye"
+        tssh: remote_server
+            message: echo hello ; sleep 5 ; echo byebye
+            tunnel -> remote_server
+        hello
+        byebye
+        $
 
 
   3. Also, we can setup a proxy server to our central node. This is
   helpful when your remote server has access to certain websites that
   you want to to gain access to from outside of the LAN.
 
-     $ tssh -P 5050
-     tssh: Proxy to cello* > port 5050
-     central > 
-     # as long as your connection to central is open you 
-     # can set your browser's proxy settings to localhost:5050 
+        $ tssh -P 5050
+        tssh: Proxy to cello* > port 5050
+        central > 
+        # as long as your connection to central is open you 
+        # can set your browser's proxy settings to localhost:5050 
 
 ### file-system mounting
 
