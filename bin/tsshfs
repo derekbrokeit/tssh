@@ -5,6 +5,11 @@
     #. $HOME/.path
 #fi
 
+if [[ "x$LOGS_DIR" == "x" ]] ; then
+    ! echo "Usage: $(basename $) [server_name]"
+    ! echo "The environment  variable \$SSHFS_DIR was not detected, please set it and proceed" 
+    exit
+fi
 
 # find the destination
 search="$(tssh-search $1)"
@@ -23,6 +28,11 @@ auto_msg=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $5}')
 dir_name="$SSHFS_DIR/$(echo "$name" | sed 's/\*//')"
 mkdir -p $dir_name
 
+if [[ "x$(ls $dir_name)" != "x" ]] ; then
+    ! echo "$(basename $0): $name may already be mounted, please check $dir_name"
+    exit
+fi
+
 cmd="sshfs"
 if [[ ! -n $port && -n $ip ]] ; then
     # this connects to any server without port forwarding
@@ -40,8 +50,8 @@ elif [[ -n $ip  && -n $port ]] ; then
     tssh-tunnel $port $ip $center_ip
 
     # now establish connection to final destination
-    echo "\r  tunnel -> $name ...                    \n"
-    $cmd -p $port localhost -t $message
+    #echo "\r  tunnel -> $name ...                    \n"
+    $cmd -p $port localhost: $dir_name && echo "$(basename $0): successfully mounted $dir_name"
 fi
 
 # vim: set filetype=sh
