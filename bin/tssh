@@ -1,4 +1,6 @@
 #!/bin/sh
+# Copyright 2012 Derek Ashley Thomas
+
 # this establishes a connection to a remote server
 # if necessary it automatically handles port forwarding from a central server
 # This depends on the existance of a file located in $LOGS_DIR/serverconn

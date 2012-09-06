@@ -1,4 +1,5 @@
 #!/bin/sh
+# Copyright 2012 Derek Ashley Thomas
 
 # find the destination
 destination=$1

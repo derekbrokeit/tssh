@@ -1,4 +1,6 @@
 #!/bin/sh
+# Copyright 2012 Derek Ashley Thomas
+
 # opens a temporary (60 second) tunnel from $center_ip to $ip using $port
 
 
