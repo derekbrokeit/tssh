@@ -28,6 +28,8 @@ An example run is like follows:
     # reference more universal
     $ echo "export LOGS_DIR='~/Dropbox/server_logs'" >> ~/.bashrc
     $ source ~/.bashrc
+    
+    # let's set up our server list
     $ tssh-setup
     tssh-setup: setup for server list
     - New serverconn file
@@ -49,7 +51,7 @@ An example run is like follows:
     
     tssh-setup: 2 servers added
 
-    $ # now let's print out the server list just to make sure
+    # now let's print out the server list just to make sure
     $ tssh-setup -p
       ---- serverconn ----
     name                  |  address           |  user             |  port | message
@@ -57,6 +59,10 @@ An example run is like follows:
     central*              |  example.com       |  my_username      |       | 
     remote_server         |  198.168.1.100     |  some_username    |  7070 | tmux attach
     ---- serverconn ----
+
+    # Remeber, it is important to give attach a '*' to the computer acting as your
+    # central gate. There are currently no checks in place to make sure you do this
+    # since you can add them in any order. 
 
 We're all setup now to bounce to remote_server directly! Time to get on
 over there.
@@ -102,13 +108,16 @@ program you can do some interesting things.
 ### file-system mounting
 
 For those times you need to interact directly with your remote
-computers, file system, I've got you covered. To use this, you must
+computer's file system, I've got you covered. To use this, you must
 install `sshfs`, which is available on most package distributions. Also,
 please setup the environent variable `SSHFS_DIR` (in the same wasy as
 `LOGS_DIR`), which will be a place to mount your remote file systems.
 
+    # setup the environment variable
     $ echo "export SSFS_DIR='~/sshfs'" >> ~/.bashrc
     $ source ~/.bashrc
+
+    # ok, now let's get going
     $ tssfs remote
     tsshfs: successfully mounted /Users/user_name/sshfs/remote_server
     # now you can go there and see what's available
