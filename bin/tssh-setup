@@ -1,0 +1,87 @@
+#!/bin/bash
+
+
+# setup safe exit
+trap 'killListener' EXIT
+tmp=$(mktemp -t $(basename $0).XXX)
+killListener() {
+    if [[ $count -gt 0 ]] ; then
+        echo "$count servers added"
+        rm $tmp
+        rm $tmp.*
+    fi
+}
+
+getServ(){
+    while [[ true ]] ; do
+        # test for name
+        # make sure no repeat
+        read -p "$(($count + 1)).   Name: " name
+        awk -F'|' '{print $1}' $SERV | sed 's/\*$//g' > $tmp
+        test=$( grep "^${name}$" $tmp)
+        if [[ "x$test" == "x" ]] ; then
+            break
+        else
+            echo "*** A server with the name '$name' already exists"
+        fi
+    done
+
+    while [[ true ]] ; do
+        # test for address
+        # make sure no repeat
+        read -p "  address: " addr
+        awk -F'|' '{print $2}' $SERV  > $tmp
+        test=$( grep "^${name}$" $tmp)
+        if [[ "x$test" == "x" ]] ; then
+            break
+        else
+            echo "*** A server with the address '$addr' already exists"
+        fi
+    done
+
+    # now get username and port, which can be anything
+    # repetition is ok
+    read -p "     user: " user
+    read -p "     port: " port
+    read -p "     msg : " msg
+
+    # stamp the server file with this server
+    echo "$name|$addr|$user|$port|$msg" >> $SERV
+
+    # change the count
+    count=$count+1
+
+}
+
+SERV=$LOGS_DIR/serverconn
+echo "$(basename $0): setup for server list"
+if [[ ! -n $SERV ]] ; then
+    touch $SERV
+    echo "  - New serverconn file"
+    echo "  - append a star at the end of servernames"
+    echo "    for central (port-forwarding server"
+    echo "  - Port is optional, but is used for port forwarding"
+    echo ""
+
+    count=0
+    while [[ true ]] ; do
+        getServ
+    done
+else
+    echo "  ---- serverconn ----"
+    awk -F'|' '{ printf "%-10s  |  %-25s  |  %-10s  |  %s \n",$1,$2,$3,$4 }' $SERV
+    echo "  ---- serverconn ----"
+    echo "  - adding new server"
+
+    count=$(cat $SERV | wc -l)
+    while [[ true ]] ; do
+        getServ
+    done
+
+fi
+
+
+
+
+
+
