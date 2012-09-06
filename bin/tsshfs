@@ -36,7 +36,7 @@ fi
 cmd="sshfs"
 if [[ ! -n $port && -n $ip ]] ; then
     # this connects to any server without port forwarding
-    $cmd $ip: $dir_name
+    $cmd $ip: $dir_name && echo "$(basename $0): successfully mounted $dir_name"
 
 elif [[ -n $ip  && -n $port ]] ; then
 
