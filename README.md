@@ -23,6 +23,9 @@ can be located anywhere, but it requires the environmental variable
 `$LOGS_DIR` for use. You can set this variable in your shell's rc file.
 An example run is like follows:
 
+    # because bash is common, I'll assume bashrc here,
+    # but you could also use .${SHELL}rc to make the .bashrc 
+    # reference more universal
     $ echo "export LOGS_DIR='~/Dropbox/server_logs'" >> ~/.bashrc
     $ source ~/.bashrc
     $ tssh-setup
@@ -69,7 +72,7 @@ program you can do some interesting things.
   you disconnect, it will automatically free up your port (e.g. 7070 or
   whatever you set it) when you are done.
 
-        # note, we cna actually use smaller parts of the name as long as it is unique
+        # note, we can actually use smaller parts of the name as long as it is unique
         $ tssh remote
         tssh: remote
             tunnel -> remote_server
@@ -98,7 +101,8 @@ program you can do some interesting things.
 
 ### file-system mounting
 
-This is another protocol that I have added. To use this, you must
+For those times you need to interact directly with your remote
+computers, file system, I've got you covered. To use this, you must
 install `sshfs`, which is available on most package distributions. Also,
 please setup the environent variable `SSHFS_DIR` (in the same wasy as
 `LOGS_DIR`), which will be a place to mount your remote file systems.
