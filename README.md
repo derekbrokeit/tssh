@@ -100,8 +100,8 @@ program you can do some interesting things.
   you want to to gain access to from outside of the LAN.
 
         $ tssh -P 5050
-        tssh: Proxy to cello* > port 5050
-        central > 
+        tssh: Proxy to central* > port 5050
+        my_username@central: ~ > 
         # as long as your connection to central is open you 
         # can set your browser's proxy settings to localhost:5050 
 
