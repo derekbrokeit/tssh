@@ -1,0 +1,16 @@
+#!/bin/sh
+# opens a temporary (60 second) tunnel from $center_ip to $ip using $port
+
+
+port=$1
+ip=$2
+center_ip=$3
+shift 3
+
+# first, open tunnel
+#echo "ssh -f2 -L $port:$ip:22 $center_ip 'sleep 60' > /dev/null  2> /dev/null"
+ssh -f2 -L $port:$ip:22 $center_ip 'sleep 60' > /dev/null  2> /dev/null
+# this establishes a tunnel to local $ip through $center_ip
+# this session automatically ends when sleep 60 ends, but is kept open as long as the tunnel is in use
+# this ensures that the port is reopenned as soon as the tunnel is disconnected from (or at least in 1 minute)
+# error messages and text output are suppressed

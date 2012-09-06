@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# find the destination
+destination=$1
+tmp=$(mktemp -t $(basename $0).XXX)
+cat $LOGS_DIR/serverconn | awk -F'|' '{print $1}' > $tmp
+egrep "^${destination}" $tmp > $tmp.1
+search=$(cat $tmp.1)
+if [[ "x$search" == "x" ]] ; then
+    # unkown server
+    ! echo "${ERROR_RED}*** $(basename $0): destination '$destination' not found${NC}"
+    exit
+elif [[ $(echo $search | wc -w) -gt 1 ]] ; then
+    # make sure the destination is unique
+    search=$( egrep "^${destination}(\*$|$)" $tmp.1)
+    if [[ $(echo $search | wc -w) -ne 1 ]] ; then
+        ! echo "${ERROR_RED}*** $(basename $0): destination '$destination' is not unique${NC}"
+        exit
+    fi
+    search="^$search(\*|\|)"
+else
+    search="^$search"
+fi
+
+echo "$search"
+
+# vim: set filetype=sh
