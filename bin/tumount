@@ -22,4 +22,4 @@ auto_msg=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $5}')
 # remove the star from the name if it happens to be a central server
 dir_name="$SSHFS_DIR/$(echo "$name" | sed 's/\*//')"
 
-umount $dir_name
+umount $dir_name && echo "$(basename $0): successfully unmounted $dir_name"
