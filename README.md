@@ -47,23 +47,23 @@ An example run is like follows:
     # let's set up our server list
     $ tssh-setup
     tssh-setup: setup for server list
-    - New serverconn file
-    - append a star at the end of servernames
-        for the central, port-forwarding server
-    - Port is optional, but is used for port forwarding
+     - New serverconn file
+     - append a star at the end of servernames
+         for the central, port-forwarding server
+     - Port is optional, but is used for port forwarding
 
-    1.   Name:  central*
-      address:  example.com
-         user:  my_username
-         port:
-         msg :
-    2.   Name:  remote_server
-      address:  198.168.1.100
-         user:  some_username
-         port:  7070
-         msg :  tmux attach
-    3.   Name:  ^C
-    
+     1.   Name:  central*
+       address:  example.com
+          user:  my_username
+          port:
+          msg :
+     2.   Name:  remote_server
+       address:  198.168.1.100
+          user:  some_username
+          port:  7070
+          msg :  tmux attach
+     3.   Name:  ^C
+     
     tssh-setup: 2 servers added
 
     # now let's print out the server list just to make sure
