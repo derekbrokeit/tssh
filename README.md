@@ -25,7 +25,7 @@ shown below.
 
     # now link the files to our bin directory
     $ for file in $(ls) ; do
-    ln -s $PWD/bin/$file $HOME/bin
+    ln -s $PWD/$file $HOME/bin
     done
     $ # all done
 
