@@ -7,6 +7,22 @@ the different computers with an anoying middle man getting in the way.
 That's where tunneling comes in, which is frequently use to forward
 ports so that we can more easily connect from one machine to another.
 
+    # the setup is kinda like this:
+                                                               +----------------+
+                     Time consuming multiple jumps             |                |
+                                                       +-------o other computer |
+      +-----------+            +-------------+         |       |                |
+      |           |            |   central   |         |       +----------------+
+      |  my local |            |-------------|         |
+      |  computer +----------> |  gate       +---------+
+      |           |            |  keeper     |         |
+      |           |            |             |         |       +---------------+
+      +------v----+            +-------------+         |       | remote server |
+             |                                         +-------o  -----------  |
+             |   using tssh, the connection seems direct       | Gotta get work|
+             +------------->----------->------------>----------o done          |
+                                                               +---------------+
+
 With tssh, I hope that the whole act of tunneling can be greatly
 simplified with the least amount of load or cost to your computers or
 servers.
