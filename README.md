@@ -13,6 +13,27 @@ servers.
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
+## Installation
+
+Installation is quite simple. It requires the scripts from the
+repositories bin directory and two customizable environment variables.
+The description of these variables is given later, but I recommend those
+shown below.
+
+    $ git clone git@github.com:scicalculator/tssh.git
+    $ cd tssh/bin
+
+    # now link the files to our bin directory
+    $ for file in $(ls) ; do
+    ln -s $PWD/bin/$file $HOME/bin
+    done
+    $ # all done
+
+    # now set the environment variables (here replace '.bashrc' with your shell file)
+    $ echo "export LOGS_DIR='~/Dropbox/server_logs'" >> ~/.bashrc
+    $ echo "export SSHFS_DIR='~/sshfs'" >> ~/.bashrc
+    $ source ~/.bashrc
+
 ## Usage
 
 ### Setup 
@@ -22,12 +43,6 @@ tssh uses a log file to hold a list of know servers and central servers
 can be located anywhere, but it requires the environmental variable
 `$LOGS_DIR` for use. You can set this variable in your shell's rc file.
 An example run is like follows:
-
-    # because bash is common, I'll assume bashrc here,
-    # but you could also use .${SHELL}rc to make the .bashrc 
-    # reference more universal
-    $ echo "export LOGS_DIR='~/Dropbox/server_logs'" >> ~/.bashrc
-    $ source ~/.bashrc
     
     # let's set up our server list
     $ tssh-setup
@@ -112,10 +127,6 @@ computer's file system, I've got you covered. To use this, you must
 install `sshfs`, which is available on most package distributions. Also,
 please setup the environent variable `SSHFS_DIR` (in the same wasy as
 `LOGS_DIR`), which will be a place to mount your remote file systems.
-
-    # setup the environment variable
-    $ echo "export SSFS_DIR='~/sshfs'" >> ~/.bashrc
-    $ source ~/.bashrc
 
     # ok, now let's get going
     $ tssfs remote
