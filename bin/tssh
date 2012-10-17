@@ -9,6 +9,7 @@
 # $2 is a message (or code to be run) sent to the server [optional]
 #    if port forwarding occurs AND no message is given, then $auto_msg is supplied
 if [[ -f $HOME/.path ]] ; then
+    LANG=en_US.UTF-8
     . $HOME/.path
 fi
 
