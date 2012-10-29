@@ -12,6 +12,9 @@ if [[ -f $HOME/.path ]] ; then
     LANG=en_US.UTF-8
     . $HOME/.path
 fi
+if [[ -f $HOME/.profile ]] ; then
+    . $HOME/.profile
+fi
 
 # message given if none is specified (for non-port forwarded dest)
 # message given if none is specified (for port forwarded dest)
