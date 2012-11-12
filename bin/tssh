@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Copyright 2012 Derek Ashley Thomas
 
 # this establishes a connection to a remote server
@@ -96,10 +96,11 @@ elif [[ -n $ip  && -n $port ]] ; then
     center_port=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
 
     # first, open tunnel
+    echo "establishing connection to $center_ip"
     tssh-tunnel $port $ip $center_ip
 
     # now establish connection to final destination
-    echo "\r  tunnel -> $name ...                    \n"
+    echo "tunnel -> $name ..."
     #ssh -q -Y -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $port localhost -t $message
     #echo "$cmd -p $port localhost -t $message"
     $cmd -p $port localhost -t $message

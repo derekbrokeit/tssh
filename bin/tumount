@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Copyright 2012 Derek Ashley Thomas
 
 #if [[ -f $HOME/.path ]] ; then
