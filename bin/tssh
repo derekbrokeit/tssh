@@ -73,7 +73,8 @@ if [[ "x$message" != "x" ]] ; then
     echo "  message: $message"
 fi
 
-cmd="ssh -q -Y -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+#cmd="ssh -q -Y -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+cmd="ssh -q -X "
 #if [[ ${HOSTNAME} == momo* ]] ; then
 if [[ ! -n $port && -n $ip ]] ; then
     # this connects to any server without port forwarding
