@@ -47,11 +47,11 @@ elif [[ -n $ip  && -n $port ]] ; then
     center_port=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
 
     # first, open tunnel
-    tssh-tunnel $port $ip $center_ip
+    tssh-tunnel $port $ip $center_ip $center_user
 
     # now establish connection to final destination
     #echo "\r  tunnel -> $name ...                    \n"
-    $cmd -p $port localhost: $dir_name && echo "$(basename $0): successfully mounted $dir_name"
+    $cmd -p $port ${user}@localhost: $dir_name && echo "$(basename $0): successfully mounted $dir_name"
 fi
 
 # vim: set filetype=sh
