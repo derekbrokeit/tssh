@@ -73,8 +73,7 @@ if [[ "x$message" != "x" ]] ; then
     echo "  message: $message"
 fi
 
-#cmd="ssh -q -Y -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-cmd="ssh -q -X "
+cmd="ssh -q -X -C -c blowfish-cbc,arcfour "
 #if [[ ${HOSTNAME} == momo* ]] ; then
 if [[ ! -n $port && -n $ip ]] ; then
     # this connects to any server without port forwarding
@@ -102,7 +101,7 @@ elif [[ -n $ip  && -n $port ]] ; then
 
     # now establish connection to final destination
     echo "tunnel -> $name ..."
-    $cmd -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $port ${user}@localhost -t $message
+    $cmd -p $port ${user}@localhost -t $message
     # this walks through the tunnel while suppressing the "auth host" questions
     # without this, a connection to [port]:localhost is not possible inside a shell script
     # this -t '...' part opens the default tmux session
