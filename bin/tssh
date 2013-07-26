@@ -81,7 +81,7 @@ if [[ ! -n $port && -n $ip ]] ; then
         message=$auto_msg
     fi
     #ssh -q -Y -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $ip -t $message
-    $cmd $ip -t $message
+    $cmd ${user}@$ip -t $message
 elif [[ -n $ip  && -n $port ]] ; then
     # a port existing implies that we must port forward from a central server
     # this connection is from a computer that may be out in the wilderness, so we must tunnel through cello
