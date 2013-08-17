@@ -47,7 +47,8 @@ get_new_server(){
     # repetition is ok
     read -p "     user: " user
     read -p "     port: " port
-    read -p "     msg : " msg
+    echo    "     msg (not a password):"
+    read -p "         > " msg
 
     # stamp the server file with this server
     echo "$name|$addr|$user|$port|$msg" >> $SERV
