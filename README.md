@@ -31,34 +31,35 @@ servers.
 
 ## Installation
 
-Installation is quite simple. It requires the scripts from the
-repositories bin directory and two customizable environment variables.
-The description of these variables is given later, but I recommend those
-shown below.
+Installation is quite simple. Here's an example script that installs tssh.
 
-    $ git clone git@github.com:scicalculator/tssh.git
-    $ cd tssh/bin
+    #!/bin/sh
+    tmp=$(mktemp -d)
+    git clone git@github.com:scicalculator/tssh.git $tmp
+    pushd . > /dev/null
+    cd $tmp/bin
 
     # now link the files to our bin directory
-    $ for file in $(ls) ; do
-    ln -s $PWD/$file $HOME/bin
+    for file in $(ls) ; do
+        ln -s $PWD/$file $HOME/bin
     done
-    $ # all done
+    popd > /dev/null
 
-    # now set the environment variables (here replace '.bashrc' with your shell file)
-    $ echo "export LOGS_DIR='~/Dropbox/server_logs'" >> ~/.bashrc
-    $ echo "export SSHFS_DIR='~/sshfs'" >> ~/.bashrc
-    $ source ~/.bashrc
+    rm -r $tmp
+    # all done
+
+You can copy it to any file usch as `tssh-install.sh` and run it like:
+
+    $ chmod +x tssh-install.sh
+    $ ./tssh-install.sh
 
 ## Usage
 
 ### Setup 
 
-tssh uses a log file to hold a list of know servers and central servers
-(currently limited to 1) that several machines are behind. This file
-can be located anywhere, but it requires the environmental variable
-`$LOGS_DIR` for use. You can set this variable in your shell's rc file.
-An example run is like follows:
+tssh uses a log file `~/.tsshrc` to hold a list of know servers and central
+servers (currently limited to 1) that several machines are behind. The file can
+be automatically generated like follows:
     
     # let's set up our server list
     $ tssh-setup
@@ -72,12 +73,14 @@ An example run is like follows:
        address:  example.com
           user:  my_username
           port:
-          msg :
+          msg(not a password) :
+
      2.   Name:  remote_server
        address:  198.168.1.100
           user:  some_username
           port:  7070
-          msg :  tmux attach
+          msg(not a password):
+          > tmux attach
      3.   Name:  ^C
      
     tssh-setup: 2 servers added
@@ -138,11 +141,12 @@ program you can do some interesting things.
 
 ### file-system mounting
 
-For those times you need to interact directly with your remote
-computer's file system, I've got you covered. To use this, you must
-install `sshfs`, which is available on most package distributions. Also,
-please setup the environent variable `SSHFS_DIR` (in the same wasy as
-`LOGS_DIR`), which will be a place to mount your remote file systems.
+For those times you need to interact directly with your remote computer's file
+system, I've got you covered. To use this, you must install `sshfs`, which is
+available on most package distributions. By default, sshfs connects are mounted
+in `~/sshfs/${server-name}`, but the directory can be customized with the
+environent variable `SSHFS_DIR`, which will be a place to mount your remote
+file systems.
 
     # ok, now let's get going
     $ tssfs remote

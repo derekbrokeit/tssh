@@ -1,10 +1,11 @@
 #!/bin/bash
 # Copyright 2012 Derek Ashley Thomas
 
-#if [[ -f $HOME/.path ]] ; then
-    #. $HOME/.path
-#fi
+SERV=$HOME/.tsshrc
 
+if [[ ! -n $SSHFS_DIR ]] ; then
+    SSHFS_DIR=$HOME/sshfs
+fi
 
 # find the destination
 search="$(tssh-search $1)"
@@ -13,11 +14,11 @@ if [[ $? -gt 0 ]] ; then
     exit
 fi
 
-name=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $1}')
-ip=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
-user=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $3}')
-port=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
-auto_msg=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $5}')
+name=$(egrep "$search" $SERV | awk -F'|' '{print $1}')
+ip=$(egrep "$search" $SERV | awk -F'|' '{print $2}')
+user=$(egrep "$search" $SERV | awk -F'|' '{print $3}')
+port=$(egrep "$search" $SERV | awk -F'|' '{print $4}')
+auto_msg=$(egrep "$search" $SERV | awk -F'|' '{print $5}')
 
 # remove the star from the name if it happens to be a central server
 dir_name="$SSHFS_DIR/$(echo "$name" | sed 's/\*//')"

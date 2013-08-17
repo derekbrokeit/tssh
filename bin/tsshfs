@@ -1,14 +1,10 @@
 #!/bin/bash
 # Copyright 2012 Derek Ashley Thomas
 
-#if [[ -f $HOME/.path ]] ; then
-    #. $HOME/.path
-#fi
+SERV=$HOME/.tsshrc
 
-if [[ "x$LOGS_DIR" == "x" ]] ; then
-    ! echo "Usage: $(basename $) [server_name]"
-    ! echo "The environment  variable \$SSHFS_DIR was not detected, please set it and proceed" 
-    exit
+if [[ ! -n $SSHFS_DIR ]] ; then
+    SSHFS_DIR=$HOME/sshfs
 fi
 
 # find the destination
@@ -18,11 +14,11 @@ if [[ $? -gt 0 ]] ; then
     exit
 fi
 
-name=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $1}')
-ip=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
-user=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $3}')
-port=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
-auto_msg=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $5}')
+name=$(egrep "$search" $SERV | awk -F'|' '{print $1}')
+ip=$(egrep "$search" $SERV | awk -F'|' '{print $2}')
+user=$(egrep "$search" $SERV | awk -F'|' '{print $3}')
+port=$(egrep "$search" $SERV | awk -F'|' '{print $4}')
+auto_msg=$(egrep "$search" $SERV | awk -F'|' '{print $5}')
 
 # remove the star from the name if it happens to be a central server
 dir_name="$SSHFS_DIR/$(echo "$name" | sed 's/\*//')"
@@ -41,10 +37,10 @@ if [[ ! -n $port && -n $ip ]] ; then
 elif [[ -n $ip  && -n $port ]] ; then
 
     # grab info on the central server  ... this assumes that only one exists
-    center_name=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $1}')
-    center_ip=$(  egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
-    center_user=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $3}')
-    center_port=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
+    center_name=$(egrep "\*\|" $SERV | awk -F'|' '{print $1}')
+    center_ip=$(  egrep "\*\|" $SERV | awk -F'|' '{print $2}')
+    center_user=$(egrep "\*\|" $SERV | awk -F'|' '{print $3}')
+    center_port=$(egrep "\*\|" $SERV | awk -F'|' '{print $4}')
 
     # first, open tunnel
     tssh-tunnel $port $ip $center_ip $center_user

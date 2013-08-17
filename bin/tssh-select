@@ -1,11 +1,6 @@
 #!/bin/bash -l
 # Copyright 2012 Derek Ashley Thomas
 
-if [[ $COMP_TYPE != "local" ]] ; then
-    echo "*** Please use $(basename $0) from a local computer, not $HOSTNAME"
-    exit
-fi
-
 while true; do
     read -p "Server: " server
     if [[ ! -z $server ]] ; then

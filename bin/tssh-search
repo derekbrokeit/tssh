@@ -1,10 +1,12 @@
 #!/bin/bash
 # Copyright 2012 Derek Ashley Thomas
 
+SERV=$HOME/.tsshrc
+
 # find the destination
 destination=$1
 tmp=$(mktemp -t $(basename $0).XXX)
-cat $LOGS_DIR/serverconn | awk -F'|' '{print $1}' > $tmp
+cat $SERV | awk -F'|' '{print $1}' > $tmp
 egrep "^${destination}" $tmp > $tmp.1
 search=$(cat $tmp.1)
 if [[ "x$search" == "x" ]] ; then

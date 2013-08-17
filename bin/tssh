@@ -3,7 +3,7 @@
 
 # this establishes a connection to a remote server
 # if necessary it automatically handles port forwarding from a central server
-# This depends on the existance of a file located in $LOGS_DIR/serverconn
+
 # there are 2 input variables:
 # $1 is the title of the server in the serverconn file
 # $2 is a message (or code to be run) sent to the server [optional]
@@ -20,6 +20,7 @@ fi
 # message given if none is specified (for port forwarded dest)
 # auto_msg_port='source $HOME/.path  ; tmx -d'
 #auto_msg_port='source $HOME/.path  ; LANG='"$LANG"' exec tmx -d'
+SERVE=$HOME/.SERV
 
 if [[ "$1" == -P ]] ; then
     # proxy to the central server
@@ -28,8 +29,8 @@ if [[ "$1" == -P ]] ; then
 
     # get the central computer
     regex="^.+\*\|"
-    name=$(egrep "$regex" $LOGS_DIR/serverconn | awk -F'|' '{print $1}')
-    ip=$(egrep "$regex" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
+    name=$(egrep "$regex" $SERV | awk -F'|' '{print $1}')
+    ip=$(egrep "$regex" $SERV | awk -F'|' '{print $2}')
     if [[ "x$2" == "x" ]] ; then
         port=1080
     else
@@ -55,11 +56,11 @@ else
         exit
     fi
 fi
-name=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $1}')
-ip=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
-user=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $3}')
-port=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
-auto_msg=$(egrep "$search" $LOGS_DIR/serverconn | awk -F'|' '{print $5}')
+name=$(egrep "$search" $SERV | awk -F'|' '{print $1}')
+ip=$(egrep "$search" $SERV | awk -F'|' '{print $2}')
+user=$(egrep "$search" $SERV | awk -F'|' '{print $3}')
+port=$(egrep "$search" $SERV | awk -F'|' '{print $4}')
+auto_msg=$(egrep "$search" $SERV | awk -F'|' '{print $5}')
 
 # prepare the message for the server
 unset message
@@ -90,10 +91,10 @@ elif [[ -n $ip  && -n $port ]] ; then
     fi
 
     # grab info on the central server  ... this assumes that only one exists
-    center_name=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $1}')
-    center_ip=$(  egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $2}')
-    center_user=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $3}')
-    center_port=$(egrep "\*\|" $LOGS_DIR/serverconn | awk -F'|' '{print $4}')
+    center_name=$(egrep "\*\|" $SERV | awk -F'|' '{print $1}')
+    center_ip=$(  egrep "\*\|" $SERV | awk -F'|' '{print $2}')
+    center_user=$(egrep "\*\|" $SERV | awk -F'|' '{print $3}')
+    center_port=$(egrep "\*\|" $SERV | awk -F'|' '{print $4}')
 
     # first, open tunnel
     echo "establishing connection to $center_ip"

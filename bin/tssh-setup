@@ -1,12 +1,7 @@
 #!/bin/bash
 # Copyright 2012 Derek Ashley Thomas
 
-if [[ "x$LOGS_DIR" == "x" ]] ; then
-    ! echo "Usage: $(basename $)"
-    ! echo "The environment  variable \$LOGS_DIR was not detected, please set it and proceed" 
-    exit
-fi
-
+SERV=$HOME/.tsshrc
 
 # setup safe exit
 trap 'killListener' EXIT
@@ -72,7 +67,6 @@ print_server_file() {
     echo "  ---- serverconn ----"
 }
 
-SERV=$LOGS_DIR/serverconn
 echo "$(basename $0): setup for server list"
 if [[ ! -f $SERV ]] ; then
     touch $SERV
