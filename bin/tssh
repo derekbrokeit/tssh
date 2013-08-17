@@ -20,7 +20,7 @@ fi
 # message given if none is specified (for port forwarded dest)
 # auto_msg_port='source $HOME/.path  ; tmx -d'
 #auto_msg_port='source $HOME/.path  ; LANG='"$LANG"' exec tmx -d'
-SERVE=$HOME/.SERV
+SERV=$HOME/.tsshrc
 
 if [[ "$1" == -P ]] ; then
     # proxy to the central server
