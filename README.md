@@ -80,19 +80,19 @@ be automatically generated like follows:
           user:  some_username
           port:  7070
           msg(not a password):
-          > tmux attach
+              > tmux attach
      3.   Name:  ^C
      
     tssh-setup: 2 servers added
 
     # now let's print out the server list just to make sure
     $ tssh-setup -p
-      ---- ~/.tsshrc ----
+      ---- .tsshrc ----
     name                  |  address           |  user             |  port | message
     ********************************************************************************
     central*              |  example.com       |  my_username      |       | 
     remote_server         |  198.168.1.100     |  some_username    |  7070 | tmux attach
-    ---- ~/.tsshrc ----
+    ---- .tsshrc ----
 
     # Remeber, it is important to give attach a '*' to the computer acting as your
     # central gate. There are currently no checks in place to make sure you do this
