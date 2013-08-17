@@ -61,17 +61,17 @@ get_new_server(){
 # prints out the server file in a readable format
 print_server_file() {
 
-    echo "  ---- serverconn ----"
+    echo "  ---- $(basename $SERV) ----"
     echo "name|address|user|port|message" | awk -F'|' '{ printf "%-20s  |  %-16.16s  |  %-15s  |  %-4s | %s\n",$1,$2,$3,$4,$5 }' 
     echo "********************************************************************************"
     awk -F'|' '{ printf "%-20s  |  %-16.16s  |  %-15s  |  %-4s | %s\n",$1,$2,$3,$4,$5 }' $SERV
-    echo "  ---- serverconn ----"
+    echo "  ---- $(basename $SERV) ----"
 }
 
 echo "$(basename $0): setup for server list"
 if [[ ! -f $SERV ]] ; then
     touch $SERV
-    echo "  - New serverconn file"
+    echo "  - creating new file: $SERV"
     echo "  - append a star at the end of servernames"
     echo "    for the central, port-forwarding server"
     echo "  - Port is optional, but is used for port forwarding"

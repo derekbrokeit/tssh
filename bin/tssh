@@ -5,7 +5,7 @@
 # if necessary it automatically handles port forwarding from a central server
 
 # there are 2 input variables:
-# $1 is the title of the server in the serverconn file
+# $1 is the title of the server 
 # $2 is a message (or code to be run) sent to the server [optional]
 #    if port forwarding occurs AND no message is given, then $auto_msg is supplied
 if [[ -f $HOME/.path ]] ; then

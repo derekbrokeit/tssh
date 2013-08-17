@@ -64,7 +64,7 @@ be automatically generated like follows:
     # let's set up our server list
     $ tssh-setup
     tssh-setup: setup for server list
-     - New serverconn file
+     - creating new file: ~/.tsshrc
      - append a star at the end of servernames
          for the central, port-forwarding server
      - Port is optional, but is used for port forwarding
@@ -87,12 +87,12 @@ be automatically generated like follows:
 
     # now let's print out the server list just to make sure
     $ tssh-setup -p
-      ---- serverconn ----
+      ---- ~/.tsshrc ----
     name                  |  address           |  user             |  port | message
     ********************************************************************************
     central*              |  example.com       |  my_username      |       | 
     remote_server         |  198.168.1.100     |  some_username    |  7070 | tmux attach
-    ---- serverconn ----
+    ---- ~/.tsshrc ----
 
     # Remeber, it is important to give attach a '*' to the computer acting as your
     # central gate. There are currently no checks in place to make sure you do this
